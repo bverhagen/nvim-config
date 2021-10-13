@@ -1,0 +1,24 @@
+snippet new-slide "New empty slide"
+\begin{frame}
+	\frametitle{$1}
+	$0
+	\note[item]{}
+\end{frame}
+endsnippet
+
+snippet new-slide "New image slide"
+\begin{frame}
+	\frametitle{$1}
+	\begin{figure}
+		\centering
+		\includegraphics[width=\textwidth]{$2}
+	\end{figure}
+	\note[item]{$0}
+\end{frame}
+endsnippet
+
+snippet itemize "Start new itemize"
+\begin{itemize}
+	\item $0
+\end{itemize}
+endsnippet

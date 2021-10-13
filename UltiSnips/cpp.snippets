@@ -1,0 +1,121 @@
+snippet header "Header snippet"
+#ifndef `!p snip.rv = re.sub('([A-Z]{1})', r'_\1',snip.basename).upper()`_INCLUDE
+#define `!p snip.rv = re.sub('([A-Z]{1})', r'_\1',snip.basename).upper()`_INCLUDE
+
+$0
+
+#endif  /* `!p snip.rv = re.sub('([A-Z]{1})', r'_\1',snip.basename).upper()`_INCLUDE */
+endsnippet
+
+snippet namespace "Namespace snippet"
+namespace $1 {
+	$0
+} // namespace $1
+endsnippet
+
+snippet class "Simple class snippet"
+class $1 {
+	public:
+		$0
+
+	private:
+};
+endsnippet
+
+snippet class "Base class snippet"
+class $1 {
+	public:
+		virtual ~$1() = default;
+
+		$0
+
+	protected:
+		$1() = default;
+		$1(const $1& other) = default;
+		$1($1&& other) = default;
+
+		$1& operator=(const $1& other) = default;
+		$1& operator=($1&& other) = default;
+};
+endsnippet
+
+snippet class "Child snippet"
+class $1 : public $2 {
+	public:
+		$1() = default;
+		$1(const $1& other) = default;
+		$1($1&& other) = default;
+
+		~$1() noexcept override = default;
+
+		$1& operator=(const $1& other) = default;
+		$1& operator=($1&& other) = default;
+
+		$0
+};
+endsnippet
+
+snippet exception "Simple exception"
+struct $1 : std::exception {};
+endsnippet
+
+snippet exception "Exception with message"
+struct $1 : public $2 {
+	$1(const std::string& message) noexcept :
+		$2(message) {}
+};
+endsnippet
+
+snippet rule-of-five "Generate rule of five"
+/**
+ * Copy constructor
+ *
+ * \param[in] other The object to copy from
+ */
+$1(const $1& other) = default;
+
+/**
+ * Move constructor
+ *
+ * \param[in] other The object to move from
+ */
+$1($1&& other) = default;
+
+~$1() = default;
+
+/**
+ * Copy assignment operator
+ *
+ * \param[in] other The object to assign from
+ * \returns A reference to this object
+ */
+auto operator=(const $1& other) -> $1& = default;
+
+/**
+ * Move assignment operator
+ *
+ * \param[in] other the object to move assign from
+ * \returns a reference to this object
+ */
+auto operator=($1&& other) -> $1& = default;
+endsnippet
+
+snippet equality-operators "Equality operators"
+/**
+ * Equality operator
+ *
+ * \param[in] other The other object to compare with
+ * \returns True    If the objects are considered equal
+ *          False   Otherwise
+ */
+auto operator==(const $1& other) const noexcept -> bool;
+
+/**
+ * Inequality operator
+ *
+ * \param[in] other The other object to compare with
+ * \returns !operator==(other)
+ */
+auto operator!=(const $1& other) const noexcept -> bool;
+
+endsnippet
