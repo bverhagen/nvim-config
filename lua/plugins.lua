@@ -32,16 +32,16 @@ return require('packer').startup(function(use)
   use {'neovim/nvim-lspconfig', config = function() require('nvim-lspconfig') end }
 
   -- Fuzzy LSP support
-  use {
-    'ojroques/nvim-lspfuzzy',
-    requires = {
-      {'junegunn/fzf'},
-      {'junegunn/fzf.vim'},  -- to enable preview (optional)
-    },
-    config = function() require('lspfuzzy').setup {
-      save_last = true
-    } end
-  }
+  --use {
+    --'ojroques/nvim-lspfuzzy',
+    --requires = {
+      --{'junegunn/fzf'},
+      --{'junegunn/fzf.vim'},  -- to enable preview (optional)
+    --},
+    --config = function() require('lspfuzzy').setup {
+      --save_last = true
+    --} end
+  --}
 
   -- Automatically comment stuff
   use {'scrooloose/nerdcommenter'}
