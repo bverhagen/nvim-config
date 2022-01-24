@@ -2,6 +2,7 @@
 local fn = vim.fn
 local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
+  local rtp_addition = vim.fn.stdpath('data') .. '/site/pack/*/start/*'
   if not string.find(vim.o.runtimepath, rtp_addition) then
     vim.o.runtimepath = rtp_addition .. ',' .. vim.o.runtimepath
   end
