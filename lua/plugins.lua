@@ -56,20 +56,8 @@ return require('packer').startup(function(use)
     end
   }
 
-  -- Highlight C++
-  --use { 'jackguo380/vim-lsp-cxx-highlight' }
-  use {'arakashic/chromatica.nvim',
-    ft = { 'cpp' },
-    run = function() fn[':UpdateRemotePlugins']() end,
-    config = vim.cmd([[
-      let g:chromatica#enable_at_startup=1
-      let g:chromatica#responsive_mode=1
-    ]])
-    --config = function()
-      --vim.g.chromatica.enable_at_startup = 1
-      --vim.g.chromatica.responsive_mode = 1
-    --end
-  }
+  -- Highlight support using treesitter
+  use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = function() require('treesitter') end }
 
   -- Dart support
   use { 'dart-lang/dart-vim-plugin', ft = { 'dart' } }
