@@ -39,7 +39,7 @@ end
 local servers = { 'cmake', 'dartls', 'dockerls', 'hls', 'pyright' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    capabilities = require('cmp_nvim_lsp').default_capabilities(),
     on_attach = on_attach,
     flags = {
       debounce_text_changes = 150,
@@ -49,7 +49,7 @@ end
 
 -- Separate config for clangd
 nvim_lsp.clangd.setup{
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    capabilities = require('cmp_nvim_lsp').default_capabilities(),
     cmd = { 'exec-helper', 'language-server' },
     on_attach = on_attach,
     flags = {
@@ -59,7 +59,7 @@ nvim_lsp.clangd.setup{
 
 -- Separate config for ccls
 --nvim_lsp.ccls.setup{
-  --capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+  --capabilities = require('cmp_nvim_lsp').default_capabilities(),
   --on_attach = on_attach,
   --init_options = {
     --highlight = {
