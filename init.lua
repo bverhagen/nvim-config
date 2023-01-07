@@ -8,5 +8,5 @@ require('keymaps')
 
 pcall(
   vim.cmd,
-  'colorscheme gruvbox'
+  'colorscheme gruvbox-baby'
 )

@@ -50,11 +50,13 @@ return require('packer').startup(function(use)
   use {'SirVer/ultisnips', config = function() require('ultisnips') end}
 
   -- Color scheme
-  use { 'morhetz/gruvbox',
+
+  use { 'luisiacc/gruvbox-baby',
     config = function()
-      vim.g.gruvbox_italic = 1
     end
   }
+
+
 
   -- Highlight support using treesitter
   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = function() require('treesitter') end }
@@ -85,7 +87,7 @@ return require('packer').startup(function(use)
     requires = {'kyazdani42/nvim-web-devicons', opt = true},
     config = function()
       require('lualine').setup({
-        options = {theme = 'gruvbox'}
+        options = {theme = 'gruvbox-baby'}
       })
     end
   }
