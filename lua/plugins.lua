@@ -18,16 +18,6 @@ return require('packer').startup(function(use)
   use {'junegunn/fzf', run = function() fn['fzf#install']() end}
   use {'junegunn/fzf.vim', config = vim.cmd('source $HOME/.config/nvim/lua/fzf.vimrc')}
 
-  -- Autocompletion helper
-  use {'hrsh7th/nvim-cmp',
-    branch = 'main',
-    requires = {
-      {'hrsh7th/cmp-nvim-lsp', branch = 'main'},
-      {'hrsh7th/cmp-buffer', branch = 'main'}
-    },
-    config = function() require('nvim-cmp') end,
-  }
-
   -- LSP support
   use {'neovim/nvim-lspconfig', config = function() require('nvim-lspconfig') end }
 
@@ -47,7 +37,7 @@ return require('packer').startup(function(use)
   use {'scrooloose/nerdcommenter'}
 
   -- Snippets manager
-  use {'SirVer/ultisnips', config = function() require('ultisnips') end}
+  --use {'SirVer/ultisnips', config = function() require('ultisnips') end}
 
   -- Color scheme
 
@@ -55,8 +45,6 @@ return require('packer').startup(function(use)
     config = function()
     end
   }
-
-
 
   -- Highlight support using treesitter
   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = function() require('treesitter') end }
@@ -110,6 +98,95 @@ return require('packer').startup(function(use)
     config = function()
       vim.g.highlightedyank_highlight_duration = 200
     end
+  }
+
+  -- Enable Github Copilot
+  use {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "VimEnter",
+    config = function()
+      vim.defer_fn(function()
+        require("copilot").setup({
+          panel = { enabled = false },
+          suggestion = { enabled = false },
+          filetypes = { cpp = true }, 
+        })
+      end, 100)
+    end,
+  }
+
+  use {
+    "zbirenbaum/copilot-cmp",
+    after = { "copilot.lua" },
+    config = function ()
+      require("copilot_cmp").setup {
+        --method = "getCompletionsCycling",
+      }
+    end
+  }
+
+  -- Autocompletion helper
+  use {'hrsh7th/nvim-cmp',
+    branch = 'main',
+    requires = {
+      {'hrsh7th/cmp-nvim-lsp', branch = 'main'},
+      {'hrsh7th/cmp-buffer', branch = 'main'}
+    },
+    config = function()
+      local cmp = require'cmp'
+
+      cmp.setup({
+        snippet = {
+          -- REQUIRED - you must specify a snippet engine
+          expand = function(args)
+            --vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+            -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+            -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+             --vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+          end,
+        },
+        window = {
+          -- completion = cmp.config.window.bordered(),
+          -- documentation = cmp.config.window.bordered(),
+        },
+        mapping = cmp.mapping.preset.insert({
+          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-Space>'] = cmp.mapping.complete(),
+          ['<C-e>'] = cmp.mapping.abort(),
+          ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        }),
+        sources = cmp.config.sources({
+          { name = 'copilot' },
+          { name = 'nvim_lsp' },
+          --{ name = 'vsnip' }, -- For vsnip users.
+          -- { name = 'luasnip' }, -- For luasnip users.
+           --{ name = 'ultisnips' }, -- For ultisnips users.
+          -- { name = 'snippy' }, -- For snippy users.
+        }, {
+          { name = 'buffer' },
+        })
+      })
+
+      -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+      cmp.setup.cmdline({ '/', '?' }, {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = 'buffer' }
+        }
+      })
+
+      -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+      cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = 'path' }
+        }, {
+          { name = 'cmdline' }
+        })
+      })
+    end,
   }
 
   -- Automatically set up your configuration after cloning packer.nvim
