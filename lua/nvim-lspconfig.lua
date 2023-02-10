@@ -57,6 +57,20 @@ nvim_lsp.clangd.setup{
     }
 }
 
+-- Separate config for rls
+nvim_lsp.rls.setup{
+    capabilities = require('cmp_nvim_lsp').default_capabilities(),
+    rust = {
+      unstable_features = false,
+      build_on_save = false,
+      all_features = true,
+    },
+    on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    }
+}
+
 -- Separate config for ccls
 --nvim_lsp.ccls.setup{
   --capabilities = require('cmp_nvim_lsp').default_capabilities(),
