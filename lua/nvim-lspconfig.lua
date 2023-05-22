@@ -36,7 +36,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'cmake', 'dartls', 'dockerls', 'hls', 'pyright' }
+local servers = { 'cmake', 'dockerls', 'hls', 'pyright', 'rust_analyzer' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     capabilities = require('cmp_nvim_lsp').default_capabilities(),
@@ -51,20 +51,6 @@ end
 nvim_lsp.clangd.setup{
     capabilities = require('cmp_nvim_lsp').default_capabilities(),
     cmd = { 'exec-helper', 'language-server' },
-    on_attach = on_attach,
-    flags = {
-      debounce_text_changes = 150,
-    }
-}
-
--- Separate config for rls
-nvim_lsp.rls.setup{
-    capabilities = require('cmp_nvim_lsp').default_capabilities(),
-    rust = {
-      unstable_features = false,
-      build_on_save = false,
-      all_features = true,
-    },
     on_attach = on_attach,
     flags = {
       debounce_text_changes = 150,

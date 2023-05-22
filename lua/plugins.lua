@@ -50,7 +50,16 @@ return require('packer').startup(function(use)
   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = function() require('treesitter') end }
 
   -- Dart support
-  use { 'dart-lang/dart-vim-plugin', ft = { 'dart' } }
+  --use { 'dart-lang/dart-vim-plugin', ft = { 'dart' } }
+
+  -- Flutter tools support
+  use {
+    'akinsho/flutter-tools.nvim',
+    requires = {
+        'nvim-lua/plenary.nvim',
+    },
+    config = function() require("flutter-tools").setup{} end
+  }
 
   -- QML support
   use { 'peterhoeg/vim-qml', ft = { 'qml' } }
@@ -155,7 +164,11 @@ return require('packer').startup(function(use)
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
           ['<C-Space>'] = cmp.mapping.complete(),
           ['<C-e>'] = cmp.mapping.abort(),
-          ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ["<CR>"] = cmp.mapping.confirm({
+            -- this is the important line
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = false,
+          }),
         }),
         sources = cmp.config.sources({
           { name = 'copilot' },
