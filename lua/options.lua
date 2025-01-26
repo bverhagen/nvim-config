@@ -1,4 +1,4 @@
-vim.opt.background = 'dark'
+--vim.opt.background = 'dark'
 
 vim.opt.wrapscan = true -- wrap searches around top/bottom of file
 vim.opt.writebackup = true -- no tilde files
