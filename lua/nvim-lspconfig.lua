@@ -1,4 +1,5 @@
 local nvim_lsp = require('lspconfig')
+local util = require("lspconfig/util")
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -36,7 +37,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'cmake', 'dockerls', 'eslint', 'hls', 'pyright', 'rust_analyzer', 'terraform_lsp', 'ts_ls'}
+local servers = { 'cmake', 'dockerls', 'eslint', 'hls', 'rust_analyzer', 'terraform_lsp', 'ts_ls'}
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     capabilities = require('cmp_nvim_lsp').default_capabilities(),
@@ -55,6 +56,20 @@ nvim_lsp.clangd.setup{
     flags = {
       debounce_text_changes = 150,
     }
+}
+
+
+-- Separate config for pyright
+nvim_lsp.pyright.setup{
+    capabilities = require('cmp_nvim_lsp').default_capabilities(),
+    on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    },
+    root_dir = function(fname)
+      return util.root_pattern(".git", "setup.py",  "setup.cfg", "pyproject.toml", "requirements.txt")(fname) or
+        util.path.dirname(fname)
+    end
 }
 
 -- Separate config for ccls
