@@ -5,9 +5,7 @@ if fn.empty(fn.glob(install_path)) > 0 then
   local rtp_addition = vim.fn.stdpath('data') .. '/site/pack/*/start/*'
   if not string.find(vim.o.runtimepath, rtp_addition) then
     vim.o.runtimepath = rtp_addition .. ',' .. vim.o.runtimepath
-  end
-  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-end
+  end packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path}) end
 
 -- Load plugins
 return require('packer').startup(function(use)
@@ -19,7 +17,7 @@ return require('packer').startup(function(use)
   use {'junegunn/fzf.vim', config = vim.cmd('source $HOME/.config/nvim/lua/fzf.vimrc')}
 
   -- LSP support
-  use {'neovim/nvim-lspconfig', config = function() require('nvim-lspconfig') end }
+  use {'neovim/nvim-lspconfig' }
 
   -- Fuzzy LSP support
   --use {
@@ -113,12 +111,12 @@ return require('packer').startup(function(use)
   use {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
-    event = "VimEnter",
+    --event = "VimEnter",
     config = function()
       vim.defer_fn(function()
         require("copilot").setup({
-          panel = { enabled = false },
-          suggestion = { enabled = false },
+          panel = { enabled = true },
+          suggestion = { enabled = true },
           filetypes = { cpp = true }, 
         })
       end, 100)
@@ -134,6 +132,33 @@ return require('packer').startup(function(use)
       }
     end
   }
+
+  -- Neovim sync to (remote) jupyter labs
+  use {
+    "SUSTech-data/neopyter",
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'AbaoFromCUG/websocket.nvim',
+    },
+    config = function()
+        require("neopyter").setup({
+          mode="direct",
+          remote_address = "127.0.0.1:9001",
+          file_pattern = { "*.ju.py" },
+          on_attach = function(bufnr)
+            -- do some buffer keymap
+          end,
+        })
+    end,
+  }
+
+  --use {
+    --"zchown/nvim-ipynb",
+    ----ft = { "ipynb", "python" },
+    --config = function()
+      --require("nvim-ipynb").setup()
+    --end,
+  --}
 
   -- Autocompletion helper
   use {'hrsh7th/nvim-cmp',
@@ -199,6 +224,15 @@ return require('packer').startup(function(use)
           { name = 'cmdline' }
         })
       })
+
+      -- Improve co-pilot integration in cmp menu
+      cmp.event:on("menu_opened", function()
+        vim.b.copilot_suggestion_hidden = true
+      end)
+
+      cmp.event:on("menu_closed", function()
+        vim.b.copilot_suggestion_hidden = false
+      end)
     end,
   }
 
