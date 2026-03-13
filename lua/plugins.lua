@@ -107,59 +107,6 @@ return require('packer').startup(function(use)
     end
   }
 
-  -- Enable Github Copilot
-  use {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    --event = "VimEnter",
-    config = function()
-      vim.defer_fn(function()
-        require("copilot").setup({
-          panel = { enabled = true },
-          suggestion = { enabled = true },
-          filetypes = { cpp = true }, 
-        })
-      end, 100)
-    end,
-  }
-
-  use {
-    "zbirenbaum/copilot-cmp",
-    after = { "copilot.lua" },
-    config = function ()
-      require("copilot_cmp").setup {
-        --method = "getCompletionsCycling",
-      }
-    end
-  }
-
-  -- Neovim sync to (remote) jupyter labs
-  use {
-    "SUSTech-data/neopyter",
-    requires = {
-      'nvim-lua/plenary.nvim',
-      'AbaoFromCUG/websocket.nvim',
-    },
-    config = function()
-        require("neopyter").setup({
-          mode="direct",
-          remote_address = "127.0.0.1:9001",
-          file_pattern = { "*.ju.py" },
-          on_attach = function(bufnr)
-            -- do some buffer keymap
-          end,
-        })
-    end,
-  }
-
-  --use {
-    --"zchown/nvim-ipynb",
-    ----ft = { "ipynb", "python" },
-    --config = function()
-      --require("nvim-ipynb").setup()
-    --end,
-  --}
-
   -- Autocompletion helper
   use {'hrsh7th/nvim-cmp',
     branch = 'main',
